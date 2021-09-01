@@ -46,22 +46,22 @@ class AddressBook(UserDict):
     def add_birthday(self, name, birthday):
         self.contacts[name]['Birthday'] = birthday
 
-    #Выводит список контактов у которых день рождения через n_days от текущей даты
+        # Выводит список контактов у которых день рождения через n_days от текущей даты
     def nearby_birthday(self, n_days):
-        #Узнаем сегодняшнюю дату
-        now = datetime.date(datetime.now())
-        #узнаем дату через заданное количество дней
-        future = now + timedelta(days = int(n_days))
+        
+        now = datetime.now().timetuple().tm_yday # Количество дней с начала года сегодня
+        future = now + int(n_days) # Количество дней с начала года с учётом введённого числа
+        new_year_future = 0
+        if future > 365:
+            new_year_future = future - 365
+            future = 365
         fut_list = []
-
-        #Перебираем словари по именам
-        for key, value in self.contacts.items():
-            #Заходим у внутренний словарь чтоб найти дату дня рождения
-            for i, j in value.items():
+    
+        for key, value in self.contacts.items(): # Перебираем словари по именам
+            for i, j in value.items(): # Заходим у внутренний словарь чтоб найти дату дня рождения
                 if i == 'Birthday':
-                    #преобразуем строку в дату и если подходит по условию, добавляем имя в список
-                    s = datetime.date(datetime.strptime(j, '%d-%m-%Y'))
-                    if s <= future:
+                    s = datetime.strptime(j, '%d.%m.%Y').timetuple().tm_yday # Преобразуем др в число дней с начала года
+                    if s <= future and s >= now or s >= 1 and s <= new_year_future:
                         fut_list.append(key)
                     else:
                         continue
@@ -97,7 +97,6 @@ class AddressBook(UserDict):
     #Правильность ввода номера телефона
     def validate_phone(self, phone: str):
         san_phone = re.sub(r'[-)( ]', '', phone)
-        print(san_phone)
         if re.match('^\\+380\d{9}$', san_phone):
             return True
         else:
