@@ -160,8 +160,13 @@ def note_update():
         print("File not accessible")
     return f'Note updated to: {note}'
 
+# def Tag_Search_Helper(tag: str, flist: list, filename: str, text: str):
+#     if tag != '%%%%%%%%%%' and (tag.lower() in text[0].lower()): #Tag we're looking for in the first line, lowercase
+#         flist.append(filename)
+#     return flist
 def Tag_Search_Helper(tag: str, flist: list, filename: str, text: str):
-    if tag != '%%%%%%%%%%' and (tag.lower() in text[0].lower()): #Tag we're looking for in the first line, lowercase
+    # Tag we're looking for in the first line, lowercase
+    if tag != '%%%%%%%%%%' and (tag.lower() in text[0].lower()):
         flist.append(filename)
     return flist
 
@@ -182,15 +187,46 @@ def pretty_commands():
     return table
 
 
-def tag_search():
-    deftags = ['%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%']
-    tags = input('Enter up to six tags ')
-    tags = tags.split(' ')
-    tags.extend(deftags)
-    tags = tags[:6] 
-    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-    flist=[]
+# def tag_search():
+    # deftags = ['%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%']
+    # tags = input('Enter up to six tags ')
+    # tags = tags.split(' ')
+    # tags.extend(deftags)
+    # tags = tags[:6] 
+    # __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    # flist=[]
 
+    # files = [f for f in os.listdir('.') if os.path.isfile(f)]
+    # for filename in files:
+    #     try:
+    #         with open(os.path.join(__location__, filename), encoding='utf-8') as currentFile:
+    #             text = currentFile.readlines()
+    #             flist = Tag_Search_Helper(tags[0], flist, filename, text)
+    #             flist = Tag_Search_Helper(tags[1], flist, filename, text)
+    #             flist = Tag_Search_Helper(tags[2], flist, filename, text)
+    #             flist = Tag_Search_Helper(tags[3], flist, filename, text)
+    #             flist = Tag_Search_Helper(tags[4], flist, filename, text)
+    #             flist = Tag_Search_Helper(tags[5], flist, filename, text)
+
+    #     except:
+    #         print(f"{filename} contains less than 2 strings or cannot be opened")
+
+    # result = Counter(flist)
+    # if not result:
+    #     return 'No match!'
+    # else:
+    #     res = 'Matches in Files:\n'
+    #     for key, value in result.items():
+    #         res += f'{value} : {key}\n'
+    #     return res
+
+
+def tag_search():
+    tags = input('Enter six tags: ')
+    tags = tags.split(' ')
+    __location__ = os.path.realpath(os.path.join(
+        os.getcwd(), os.path.dirname(__file__)))
+    flist = []
     files = [f for f in os.listdir('.') if os.path.isfile(f)]
     for filename in files:
         try:
@@ -202,19 +238,14 @@ def tag_search():
                 flist = Tag_Search_Helper(tags[3], flist, filename, text)
                 flist = Tag_Search_Helper(tags[4], flist, filename, text)
                 flist = Tag_Search_Helper(tags[5], flist, filename, text)
-
         except:
-            print(f"{filename} contains less than 2 strings or cannot be opened")
-
+            pass
     result = Counter(flist)
-    if not result:
-        return 'No match!'
-    else:
-        res = 'Matches in Files:\n'
-        for key, value in result.items():
-            res += f'{value} : {key}\n'
-        return res
-    
+    print("Matches in Files:")
+    for key, value in result.items():
+        print( f'{value} : {key}')
+
+
 
 def tag_update():
     #file_to_open = 'data.txt' #filename input.
