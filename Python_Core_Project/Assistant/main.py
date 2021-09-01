@@ -160,15 +160,15 @@ def note_update():
         print("File not accessible")
     return f'Note updated to: {note}'
 
-# def Tag_Search_Helper(tag: str, flist: list, filename: str, text: str):
-#     if tag != '%%%%%%%%%%' and (tag.lower() in text[0].lower()): #Tag we're looking for in the first line, lowercase
-#         flist.append(filename)
-#     return flist
 def Tag_Search_Helper(tag: str, flist: list, filename: str, text: str):
-    # Tag we're looking for in the first line, lowercase
-    if tag != '%%%%%%%%%%' and (tag.lower() in text[0].lower()):
+    if tag != '%%%%%%%%%%' and (tag.lower() in text[0].lower()): #Tag we're looking for in the first line, lowercase
         flist.append(filename)
     return flist
+# def Tag_Search_Helper(tag: str, flist: list, filename: str, text: str):
+#     # Tag we're looking for in the first line, lowercase
+#     if tag != '%%%%%%%%%%' and (tag.lower() in text[0].lower()):
+#         flist.append(filename)
+#     return flist
 
 def pretty_commands():
     table = PrettyTable()
@@ -181,44 +181,45 @@ def pretty_commands():
             ['add contact', 'change contact', 'create note', 'near birthday'],
             ['add address', 'find contact', 'change note', 'search notes by tags'],
             ['add email', 'show contacts', 'change tag', 'search notes by text'],
-            ['add birthday', 'delete contact', 'delete note', 'sorting files']
+            ['add birthday', 'delete contact', 'delete note', 'sorting files'],
+            ['', '', 'read note', 'show all tags']
         ]
     )
     return table
 
 
 # def tag_search():
-    # deftags = ['%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%']
-    # tags = input('Enter up to six tags ')
-    # tags = tags.split(' ')
-    # tags.extend(deftags)
-    # tags = tags[:6] 
-    # __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-    # flist=[]
+#     deftags = ['%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%', '%%%%%%%%%%']
+#     tags = input('Enter up to six tags ')
+#     tags = tags.split(' ')
+#     tags.extend(deftags)
+#     tags = tags[:6] 
+#     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+#     flist=[]
 
-    # files = [f for f in os.listdir('.') if os.path.isfile(f)]
-    # for filename in files:
-    #     try:
-    #         with open(os.path.join(__location__, filename), encoding='utf-8') as currentFile:
-    #             text = currentFile.readlines()
-    #             flist = Tag_Search_Helper(tags[0], flist, filename, text)
-    #             flist = Tag_Search_Helper(tags[1], flist, filename, text)
-    #             flist = Tag_Search_Helper(tags[2], flist, filename, text)
-    #             flist = Tag_Search_Helper(tags[3], flist, filename, text)
-    #             flist = Tag_Search_Helper(tags[4], flist, filename, text)
-    #             flist = Tag_Search_Helper(tags[5], flist, filename, text)
+#     files = [f for f in os.listdir('.') if os.path.isfile(f)]
+#     for filename in files:
+#         try:
+#             with open(os.path.join(__location__, filename), encoding='utf-8') as currentFile:
+#                 text = currentFile.readlines()
+#                 flist = Tag_Search_Helper(tags[0], flist, filename, text)
+#                 flist = Tag_Search_Helper(tags[1], flist, filename, text)
+#                 flist = Tag_Search_Helper(tags[2], flist, filename, text)
+#                 flist = Tag_Search_Helper(tags[3], flist, filename, text)
+#                 flist = Tag_Search_Helper(tags[4], flist, filename, text)
+#                 flist = Tag_Search_Helper(tags[5], flist, filename, text)
 
-    #     except:
-    #         print(f"{filename} contains less than 2 strings or cannot be opened")
+#         except:
+#             print(f"{filename} contains less than 2 strings or cannot be opened")
 
-    # result = Counter(flist)
-    # if not result:
-    #     return 'No match!'
-    # else:
-    #     res = 'Matches in Files:\n'
-    #     for key, value in result.items():
-    #         res += f'{value} : {key}\n'
-    #     return res
+#     result = Counter(flist)
+#     if not result:
+#         return 'No match!'
+#     else:
+#         res = 'Matches in Files:\n'
+#         for key, value in result.items():
+#             res += f'{value} : {key}\n'
+#         return res
 
 
 def tag_search():
@@ -243,7 +244,7 @@ def tag_search():
     result = Counter(flist)
     print("Matches in Files:")
     for key, value in result.items():
-        print( f'{value} : {key}')
+        print(f'{value} : {key}')
 
 
 
@@ -377,7 +378,37 @@ def sorting_files ():
     serch(p)
     return (f"Sorting files by the specified path {p} completed succesfully!")
 
+def read_note():
+    # file_to_open = 'data.txt' #filename input.
+    file_to_open = input('Enter FileName: ')
+    try:
+        with open(file_to_open, encoding='utf8') as file:
+            data = file.read()
+        print(data)
+    except:
+        print('File not found')
 
+def show_all_tags():
+    __location__ = os.path.realpath(os.path.join(
+        os.getcwd(), os.path.dirname(__file__)))
+    taglist = []
+    files = [f for f in os.listdir('.') if os.path.isfile(f)]
+    for filename in files:
+        try:
+            with open(os.path.join(__location__, filename), encoding='utf-8') as currentFile:
+                text = currentFile.readlines()
+                # Note we're looking for in the thrid line, lowercase
+                temp = (text[0].lower()).split(' ')
+                for i in temp:
+                    if i.startswith('#'):
+                        taglist.append(i.strip())  
+        except:
+            pass
+    result = sorted(list(set(taglist)))
+    resstr = ''
+    resstr = ", ".join(result)
+    print('Please see the list of all available tags below:')
+    print(resstr)
 
 OPERATIONS = {
     'add contact' : add_contact,
@@ -396,7 +427,9 @@ OPERATIONS = {
     'search notes by tags' : tag_search,
     'search notes by text' : note_search,
     'sorting files' : sorting_files,
-    'help': pretty_commands 
+    'help': pretty_commands,
+    'show all tags':show_all_tags,
+    'read note': read_note
     }
 
 def get_handler(operator):
