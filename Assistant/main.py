@@ -262,101 +262,103 @@ def tag_update():
 def sorting_files ():
     
     p = input('Enter to the path to the directory: ')
+    if not p:
+        return 'path to directory not specified'
+    else:
+        print(f'Started in {p}')
+        
+        images_list = list()
+        video_list = list()
+        documents_list = list()
+        music_list = list()
+        archives_list =  list()
+
+        suffix_imeges = ".jpeg", ".png", ".jpg"
+        suffix_videos = ".avi", ".mp4", ".mov"
+        suffix_documents = ".doc", ".docx", ".txt", ".pdf", ".xlsx", ".pptx"
+        suffix_music = ".mp3", ".ogg", ".wav", ".amr"
+        suffix_archiv = ".zip", ".tar", ".gztar", ".bztar", ".xztar"
+
+        ignor = "archives", "images", "music", "videos", "documents"
+
+        def serch(p):
+
+            for i in os.listdir(p):
+                if i not in ignor:
+                    if os.path.isdir(p +"\\" + i):
+                        serch(p + "\\" + i)
     
-    print(f'Started in {p}')
-    
-    images_list = list()
-    video_list = list()
-    documents_list = list()
-    music_list = list()
-    archives_list =  list()
+            for root, dirs, files in os.walk(p):
+                for file in files:
+                    i = os.path.join(root, file)
+                    sort_file(i, file)
+                    unpuck_archives(i, file)
+                    
+                for folder in dirs:
+                    f = os.path.join(root, folder)
+                    remove_folder(f)
+        
+        def creat_folder():
 
-    suffix_imeges = ".jpeg", ".png", ".jpg"
-    suffix_videos = ".avi", ".mp4", ".mov"
-    suffix_documents = ".doc", ".docx", ".txt", ".pdf", ".xlsx", ".pptx"
-    suffix_music = ".mp3", ".ogg", ".wav", ".amr"
-    suffix_archiv = ".zip", ".tar", ".gztar", ".bztar", ".xztar"
-
-    ignor = "archives", "images", "music", "videos", "documents"
-
-    def serch(p):
-
-        for i in os.listdir(p):
-            if i not in ignor:
-                if os.path.isdir(p +"\\" + i):
-                    serch(p + "\\" + i)
- 
-        for root, dirs, files in os.walk(p):
-            for file in files:
-                i = os.path.join(root, file)
-                sort_file(i, file)
-                unpuck_archives(i, file)
-                
-            for folder in dirs:
-                f = os.path.join(root, folder)
-                remove_folder(f)
-    
-    def creat_folder():
-
-        if len(images_list) != 0:
-            if not os.path.exists(p +"\\images"):
-                os.mkdir(p + "\\images")
-        if len(video_list) != 0:
-            if not os.path.exists(p + "\\videos"):
-                os.mkdir(p + "\\videos")
-        if len(documents_list) != 0:
-            if not os.path.exists(p + "\\documents"):
-                os.mkdir(p + "\\documents")
-        if len(music_list) != 0:
-            if not os.path.exists(p + "\\music"):
-                os.mkdir(p + "\\music")
-        if len(archives_list) !=0:
-            if not os.path.exists(p + "\\archives"):
-                os.mkdir(p + "\\archives")
+            if len(images_list) != 0:
+                if not os.path.exists(p +"\\images"):
+                    os.mkdir(p + "\\images")
+            if len(video_list) != 0:
+                if not os.path.exists(p + "\\videos"):
+                    os.mkdir(p + "\\videos")
+            if len(documents_list) != 0:
+                if not os.path.exists(p + "\\documents"):
+                    os.mkdir(p + "\\documents")
+            if len(music_list) != 0:
+                if not os.path.exists(p + "\\music"):
+                    os.mkdir(p + "\\music")
+            if len(archives_list) !=0:
+                if not os.path.exists(p + "\\archives"):
+                    os.mkdir(p + "\\archives")
 
 
-    def sort_file(i, file):
+        def sort_file(i, file):
 
-        if file.endswith(suffix_imeges):
-            if file not in images_list:
-                images_list.append(file)
-            creat_folder()
-            if  i != p + "\\images" + "\\" + file:
-                os.replace(i, p + "\\images" + "\\" + file)
-        elif file.endswith(suffix_videos):
-            if file not in video_list:
-                video_list.append(file)
-            creat_folder()
-            if i != p + "\\videos" + "\\" + file:
-                os.replace(i , p + "\\videos" + "\\" + file)
-        elif file.endswith(suffix_documents):
-            if file not in documents_list:
-                documents_list.append(file)
-            creat_folder()
-            if i != p + "\\documents" + "\\" + file:
-                os.replace(i, p + "\\documents" + "\\" + file)
-        elif file.endswith(suffix_music):
-            if file not in music_list:
-                music_list.append(file)
-            creat_folder()
-            if i != p + "\\music" + "\\" + file:
-                os.replace(i, p + "\\music" + "\\" + file)
+            if file.endswith(suffix_imeges):
+                if file not in images_list:
+                    images_list.append(file)
+                creat_folder()
+                if  i != p + "\\images" + "\\" + file:
+                    os.replace(i, p + "\\images" + "\\" + file)
+            elif file.endswith(suffix_videos):
+                if file not in video_list:
+                    video_list.append(file)
+                creat_folder()
+                if i != p + "\\videos" + "\\" + file:
+                    os.replace(i , p + "\\videos" + "\\" + file)
+            elif file.endswith(suffix_documents):
+                if file not in documents_list:
+                    documents_list.append(file)
+                creat_folder()
+                if i != p + "\\documents" + "\\" + file:
+                    os.replace(i, p + "\\documents" + "\\" + file)
+            elif file.endswith(suffix_music):
+                if file not in music_list:
+                    music_list.append(file)
+                creat_folder()
+                if i != p + "\\music" + "\\" + file:
+                    os.replace(i, p + "\\music" + "\\" + file)
 
-    def remove_folder(f):
-        if not os.listdir(f):
-            os.removedirs(f)
+        def remove_folder(f):
+            if not os.listdir(f):
+                os.removedirs(f)
 
-    def unpuck_archives(i, file):
+        def unpuck_archives(i, file):
 
-        if file.endswith(suffix_archiv):
-            if file not in archives_list:
-                archives_list.append(file)
-            creat_folder()
-            name_folder_archive = file.split(".")
-            shutil.unpack_archive(i, p + "\\archives"+ "\\" + name_folder_archive[0])
-    
-    serch(p)
-    return (f"Sorting files by the specified path {p} completed succesfully!")
+            if file.endswith(suffix_archiv):
+                if file not in archives_list:
+                    archives_list.append(file)
+                creat_folder()
+                name_folder_archive = file.split(".")
+                shutil.unpack_archive(i, p + "\\archives"+ "\\" + name_folder_archive[0])
+        
+        serch(p)
+        return (f"Sorting files by the specified path {p} completed succesfully!")
 
 
 OPERATIONS = {
