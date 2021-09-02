@@ -11,16 +11,23 @@ https://phoenixnap.com/kb/install-pip-windows
 # Описание
  Ассистент может хранить всю информацию о контактах и заметки а также сортировать файлы в одном удобном месте.
 
- Основные команды Асистента
+ Основные команды Асистента:
 
-+--------------------------------------------------------------+                                                                                                             
-|       Use these commands bellow or "exit" to stop work       |                                                                                                            
-+--------------+----------------+-------------+----------------+                                                                                                            
-|   ADD INFO   |  CHANGE INFO   |  Notes&Tags |  Additionally  |
-+--------------+----------------+-------------+----------------+
-| add contact  | change contact | create note | near birthday  |
-| add address  |  find contact  | change note | search by tags |
-|  add email   | show contacts  |  change tag | search by text |
-| add birthday | delete contact | delete note | sorting files  |
-|              |                |  read note  | show all tags  |
-+--------------+----------------+-------------+----------------+
+- add contact  
+- change contact 
+- create note 
+- near birthday  
+- add address  
+- find contact  
+- change note 
+- search by tags 
+- add email   
+- show contacts  
+- change tag 
+- search by text
+- add birthday 
+- delete contact 
+- delete note 
+- sorting files  
+- read note
+- show all tags
