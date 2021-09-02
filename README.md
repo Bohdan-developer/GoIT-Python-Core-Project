@@ -14,8 +14,8 @@ https://phoenixnap.com/kb/install-pip-windows
  Основные команды Асистента
 
 +--------------------------------------------------------------+                                                                                                             
-|       Use these commands bellow or "exit" to stop work       |\n
-+--------------+----------------+-------------+----------------+\n
+|       Use these commands bellow or "exit" to stop work       |                                                                                                            
++--------------+----------------+-------------+----------------+                                                                                                            
 |   ADD INFO   |  CHANGE INFO   |  Notes&Tags |  Additionally  |
 +--------------+----------------+-------------+----------------+
 | add contact  | change contact | create note | near birthday  |
